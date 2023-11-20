@@ -21,7 +21,7 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-// Passport Config
+// Passport Configuration
 require('./passportConfig')(passport);
 
 app.use(passport.initialize());
