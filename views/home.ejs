@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/head', { title: 'Home' }) %>
+    <body>
+        <%- include('partials/navbar') %>
+
+        <div class="container">
+            <% if (error) { %>
+                <p><%= error %></p>
+            <% } else { %>
+                <h2><%= poll.question %></h2>
+                <p><%= poll.option1Text %>: <%= poll.option1Votes %></p>
+                <p><%= poll.option2Text %>: <%= poll.option2Votes %></p>
+                <p><%= message %></p>
+
+                <% if (loggedIn && poll.status && !user.hasVoted) { %>
+                    <form action="/vote/option1" method="post">
+                        <button type="submit" class="btn btn-primary">Vote for <%= poll.option1Text %></button>
+                    </form>
+                    <form action="/vote/option2" method="post">
+                        <button type="submit" class="btn btn-primary">Vote for <%= poll.option2Text %></button>
+                    </form>
+                <% } %>
+
+                <% if (loggedIn && user.hasVoted) { %>
+                    <div class="alert alert-info" role="alert">
+                        You have already voted.
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+
+        <%- include('partials/bootstrapscripts') %>
+    </body>
+</html>
