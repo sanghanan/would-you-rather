@@ -17,6 +17,7 @@
     "express-session": "^1.17.3",
     "install": "^0.13.0",
     "npm": "^10.2.4",
+    "open": "^9.1.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "sequelize": "^6.35.1",

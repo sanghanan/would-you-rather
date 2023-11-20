@@ -6,24 +6,20 @@ const passport = require('passport');
 const Poll = require('./models/poll');
 const flash = require('connect-flash');
 
-
 const app = express();
 app.use(express.static('public'));
 const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
-// Initialize connect-flash middleware
-app.use(flash());
 
+app.use(flash());
 
 // Configure session middleware
 app.use(session({
-    secret: 'your-secret-key',
+    secret: 'secret-key',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
 }));
-
-app.use(flash());
 
 // Passport Config
 require('./passportConfig')(passport);
@@ -35,7 +31,6 @@ app.use((req, res, next) => {
     res.locals.loggedIn = req.isAuthenticated();
     next();
 });
-
 
 app.set('view engine', 'ejs');
 app.get('/', async (req, res) => {
@@ -67,7 +62,7 @@ app.get('/', async (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register', {
         title: 'Register',
-        error: req.flash('error'), // Retrieve error message from flash
+        error: req.flash('error'),
         message: ""
     });
 });
@@ -78,14 +73,11 @@ app.get('/login', (req, res) => {
     });
 });
 
-
-// Include auth routes after initializing passport
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 
 const pollRoutes = require('./routes/poll');
 app.use('/vote', pollRoutes);
-
 
 sequelize.authenticate()
     .then(() => console.log('Connection has been established successfully.'))
@@ -96,4 +88,11 @@ sequelize.sync({ force: false })
         console.log('Tables have been synchronized');
     });
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+    console.log(`Opening http://localhost:${port} in the browser`);
+    import('open').then(open => {
+        open.default(`http://localhost:${port}`);
+    });
+});
+
