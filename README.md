@@ -19,7 +19,7 @@ To get the application running on your local machine, follow these steps:
 
 1. **Clone the Repository**:
 ```bash
-git clone https://github.com/your-repository/your-project.git 
+[git clone https://github.com/your-repository/your-project.git ](https://github.com/sanghanan/would-you-rather.git)
    ```
 2. **Navigate to the Project Directory**:
 ```bash
