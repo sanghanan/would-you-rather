@@ -9,7 +9,7 @@ async function seedDatabase() {
         // Create an admin user
         const hashedPassword = await bcrypt.hash('admin', 10);
         await User.create({
-            username: 'admin2',
+            username: 'admin',
             password: hashedPassword,
             isAdmin: true
         });

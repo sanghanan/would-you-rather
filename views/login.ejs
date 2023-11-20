@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('partials/head', { title: 'Login' }) %>
+<%- include('partials/head', { title: 'Login' }) %>
 
-    <body>
-        <%- include('partials/navbar') %>
+<body style="background: url('pexels-element-digital-1550337.jpg'); background-size: cover;">
+<%- include('partials/navbar') %>
 
-        <div class="container">
-            <h2 class="mt-5">Login</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Login</h2>
 
-            <% if (error) { %>
-                <div class="alert alert-danger" role="alert">
-                    <%= message %>
-                </div>
-            <% } %>
+                    <% if (error && error.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error %>
+                        </div>
+                    <% } %>
 
-            <div class="row">
-                <div class="col-md-6 offset-md-3">
                     <form action="/auth/login" method="POST">
                         <div class="form-group">
                             <label for="username">Username</label>
@@ -30,7 +32,10 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<script src="https://unpkg.com/@popperjs/core@2.5.5/dist/umd/popper.min.js"></script>
 
-        <%- include('partials/bootstrapscripts') %>
-    </body>
+<%- include('partials/bootstrapscripts') %>
+</body>
 </html>

@@ -1,19 +1,18 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const User = require('../models/user'); // Adjust the path as necessary
+const User = require('../models/user');
 const router = express.Router();
 
 
 router.post('/register', async (req, res) => {
     try {
-        // Extract username and password from request body
         const { username, password } = req.body;
 
-        // Check if the user already exists
         const userExists = await User.findOne({ where: { username: username } });
         if (userExists) {
-            return res.status(400).send('Username already exists');
+            req.flash('error', 'Username already exists');
+            return res.redirect('/register');
         }
 
         // Hash the password
@@ -25,19 +24,21 @@ router.post('/register', async (req, res) => {
             password: hashedPassword
         });
 
-        // Redirect to login page after successful registration
-        res.redirect('/login'); // Adjust the redirect URL as necessary
+        res.redirect('/login?message=Thank you for registering');
     } catch (error) {
         res.status(500).send('Error during registration');
     }
+
 });
 
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/', // Redirect to the desired page after successful login
-        failureRedirect: '/login', // Redirect back to the login page if there is an error
+        failureRedirect: '/login?error=User does not exist',
         failureFlash: true // Allow flash messages
+
     })(req, res, next);
+
 });
 
 router.get('/logout', (req, res) => {

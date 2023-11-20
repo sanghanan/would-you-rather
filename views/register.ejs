@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('partials/head') %> <!-- Include the head partial -->
+<%- include('partials/head', { title: 'Register' }) %>
 
-    <body>
-        <%- include('partials/navbar') %> 
+<body style="background: url('pexels-element-digital-1550337.jpg'); background-size: cover;">
+<%- include('partials/navbar') %>
 
-            <div class="container">
-                <h2 class="mt-5">User Registration</h2>
-                <div class="row">
-                    <div class="col-md-6 offset-md-3">
-                        <div class="row">
-                            <div class="col-md-6 offset-md-3">
-                                <!-- Registration Form -->
-                                <form action="/auth/register" method="POST">
-                                    <div class="form-group">
-                                        <label for="username">Username</label>
-                                        <input type="text" class="form-control" id="username" name="username" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="password">Password</label>
-                                        <input type="password" class="form-control" id="password" name="password"
-                                            required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Register</button>
-                                </form>
-                            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Register</h2>
+
+                    <% if (message) { %>
+                        <div class="alert alert-success" role="alert">
+                            <%= message %>
                         </div>
-                    </div>
+                    <% } %>
+                    <% if (error && error.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error %>
+                        </div>
+                    <% } %>
 
+                    <form action="/auth/register" method="POST">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
                 </div>
             </div>
-            <%- include('partials/bootstrapscripts') %>
-    </body>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/@popperjs/core@2.5.5/dist/umd/popper.min.js"></script>
 
+<%- include('partials/bootstrapscripts') %>
+</body>
 </html>

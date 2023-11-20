@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Poll = require('../models/poll'); // Adjust the path to your Poll model
-const User = require('../models/user'); // Adjust the path to your User model
+const Poll = require('../models/poll');
+const User = require('../models/user');
 
-
-// Route to toggle poll status
 router.post('/toggle', async (req, res) => {
     if (!req.isAuthenticated() || !req.user.isAdmin) {
         return res.status(403).send('Access denied');
@@ -16,7 +14,7 @@ router.post('/toggle', async (req, res) => {
             return res.status(404).send('Poll not found');
         }
 
-        poll.status = !poll.status; // Toggle the status
+        poll.status = !poll.status;
         await poll.save();
 
         res.redirect('/');
@@ -26,7 +24,6 @@ router.post('/toggle', async (req, res) => {
     }
 });
 
-// Route for voting on an option
 router.post('/:option', async (req, res) => {
     if (!req.isAuthenticated()) {
         return res.redirect('/login');

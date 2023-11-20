@@ -1,43 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('partials/head', { title: 'Home' }) %>
-    <body>
-        <%- include('partials/navbar') %>
+<%- include('partials/head', { title: 'Home' }) %>
+<body>
+<%- include('partials/navbar') %>
 
-        <div class="container">
-            <% if (error) { %>
-                <p><%= error %></p>
-            <% } else { %>
-                <h2><%= poll.question %></h2>
-                <p><%= poll.option1Text %>: <%= poll.option1Votes %></p>
-                <p><%= poll.option2Text %>: <%= poll.option2Votes %></p>
-                <p><%= message %></p>
+<% if (message) { %>
+    <div class="alert alert-success">
+        <%= message %>
+    </div>
+<% } %>
 
-                <% if (loggedIn && poll.status && !user.hasVoted) { %>
-                    <form action="/vote/option1" method="post">
-                        <button type="submit" class="btn btn-primary">Vote for <%= poll.option1Text %></button>
-                    </form>
-                    <form action="/vote/option2" method="post">
-                        <button type="submit" class="btn btn-primary">Vote for <%= poll.option2Text %></button>
-                    </form>
-                <% } %>
+<div class="container">
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } else { %>
+        <div class="card my-3">
+            <div class="card-body">
+                <h5 class="card-title"><%= poll.question %></h5>
 
-                <% if (loggedIn && user.hasVoted) { %>
-                    <div class="alert alert-info" role="alert">
-                        You have already voted.
+                <% if (!poll.status || isAdmin) { %>
+                    <div class="vote-results mb-3">
+                        <h3>Results:</h3>
+                        <p><%= poll.option1Text %></p>
+                        <div class="progress mb-2">
+                            <div class="progress-bar" role="progressbar" style="width: <%= (poll.option1Votes / (poll.option1Votes + poll.option2Votes) * 100).toFixed(2) || 0 %>%;" aria-valuenow="<%= poll.option1Votes %>" aria-valuemin="0" aria-valuemax="<%= poll.option1Votes + poll.option2Votes %>">
+                                <%= poll.option1Votes %>
+                            </div>
+                        </div>
+                        <p><%= poll.option2Text %></p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: <%= (poll.option2Votes / (poll.option1Votes + poll.option2Votes) * 100).toFixed(2) || 0 %>%;" aria-valuenow="<%= poll.option2Votes %>" aria-valuemin="0" aria-valuemax="<%= poll.option1Votes + poll.option2Votes %>">
+                                <%= poll.option2Votes %>
+                            </div>
+                        </div>
                     </div>
                 <% } %>
 
                 <% if (isAdmin) { %>
-                    <form action="/vote/toggle" method="post">
-                        <button type="submit" class="btn btn-secondary">
-                            <%= poll.status ? "Close Poll" : "Open Poll" %>
-                        </button>
-                    </form>
+                    <div class="admin-controls mb-3 text-center">
+                        <form action="/vote/toggle" method="post">
+                            <button type="submit" class="btn btn-secondary" style="width: auto;">
+                                <%= poll.status ? "Close Poll" : "Open Poll" %>
+                            </button>
+                        </form>
+                    </div>
                 <% } %>
-            <% } %>
-        </div>
 
-        <%- include('partials/bootstrapscripts') %>
-    </body>
+                <% if (loggedIn && !isAdmin && poll.status && !user.hasVoted) { %>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <form action="/vote/option1" method="post">
+                                <button type="submit" class="btn btn-primary btn-block">Vote for <%= poll.option1Text %></button>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <form action="/vote/option2" method="post">
+                                <button type="submit" class="btn btn-primary btn-block">Vote for <%= poll.option2Text %></button>
+                            </form>
+                        </div>
+                    </div>
+                <% } %>
+
+                <% if (loggedIn && !isAdmin && user.hasVoted) { %>
+                    <div class="alert alert-info mt-3" role="alert">
+                        You have already voted.
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    <% } %>
+</div>
+
+<%- include('partials/bootstrapscripts') %>
+</body>
 </html>

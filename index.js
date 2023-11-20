@@ -7,8 +7,8 @@ const Poll = require('./models/poll');
 const flash = require('connect-flash');
 
 
-
 const app = express();
+app.use(express.static('public'));
 const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 // Initialize connect-flash middleware
@@ -17,16 +17,17 @@ app.use(flash());
 
 // Configure session middleware
 app.use(session({
-    secret: 'your-secret-key', // Change this to a random, unique string.
+    secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: { secure: false }
 }));
+
+app.use(flash());
 
 // Passport Config
 require('./passportConfig')(passport);
 
-// Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -37,14 +38,16 @@ app.use((req, res, next) => {
 
 
 app.set('view engine', 'ejs');
-
 app.get('/', async (req, res) => {
     try {
-        const poll = await Poll.findOne(); // Fetch the first poll
+        const poll = await Poll.findOne();
         if (!poll) {
-            return res.render('home', { 
-                error: 'No polls available' 
-            });
+            return res.render('home', { error: 'No polls available' });
+        }
+
+        let message = null;
+        if (req.isAuthenticated()) {
+            message = poll.status ? "Poll is currently open!" : "Poll is currently closed!";
         }
 
         res.render('home', {
@@ -53,23 +56,28 @@ app.get('/', async (req, res) => {
             isAdmin: req.user?.isAdmin,
             error: null,
             user: req.user,
-            message: poll.status ? "Poll is currently open!" : "Poll is currently closed!"
+            message: message
         });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching the poll');
     }
 });
+
 app.get('/register', (req, res) => {
-    res.render('register', { title: 'Register', error: false, message: "" });
+    res.render('register', {
+        title: 'Register',
+        error: req.flash('error'), // Retrieve error message from flash
+        message: ""
+    });
 });
 
 app.get('/login', (req, res) => {
     res.render('login', {
-        error: false, // or true if there's an error
-        message: '' // your error message here
+        error: req.flash('error'),
     });
 });
+
 
 // Include auth routes after initializing passport
 const authRoutes = require('./routes/auth');
@@ -83,7 +91,7 @@ sequelize.authenticate()
     .then(() => console.log('Connection has been established successfully.'))
     .catch(err => console.error('Unable to connect to the database:', err));
 
-sequelize.sync({ force: false }) // Set 'force' to true if you want to drop and recreate tables
+sequelize.sync({ force: false })
     .then(() => {
         console.log('Tables have been synchronized');
     });
