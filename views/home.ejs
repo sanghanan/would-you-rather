@@ -27,6 +27,14 @@
                         You have already voted.
                     </div>
                 <% } %>
+
+                <% if (isAdmin) { %>
+                    <form action="/vote/toggle" method="post">
+                        <button type="submit" class="btn btn-secondary">
+                            <%= poll.status ? "Close Poll" : "Open Poll" %>
+                        </button>
+                    </form>
+                <% } %>
             <% } %>
         </div>
 

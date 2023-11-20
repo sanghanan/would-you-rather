@@ -4,12 +4,16 @@ const bodyParser = require('body-parser');
 const sequelize = require('./database.js');
 const passport = require('passport');
 const Poll = require('./models/poll');
+const flash = require('connect-flash');
 
 
 
 const app = express();
 const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
+// Initialize connect-flash middleware
+app.use(flash());
+
 
 // Configure session middleware
 app.use(session({
