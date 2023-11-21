@@ -1,4 +1,5 @@
 # Would You Rather? Voting System
+![Project Logo](/readme_images/logo.jpeg){:width="300px"}
 ## SWEN.755 - Assignment 4
 ## Teammates - Group 6
 - Sam Singh Anantha
@@ -52,4 +53,8 @@ The application will automatically open in your default web browser at `http://l
 - **General User**: Can vote in polls and view results of closed polls.
 - **Admin**: Can create polls, open/close polls, and view vote counts at any time.
 
-
+## Architecture Diagrams
+### Layers
+![Layers](/readme_images/Architecture.png)
+### Components
+![Components](/readme_images/Class.png)
