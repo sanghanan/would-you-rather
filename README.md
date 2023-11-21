@@ -1,5 +1,6 @@
 # Would You Rather? Voting System
-![Project Logo](/readme_images/logo.jpeg){:width="300px"}
+![Project Logo](/readme_images/logo.png)
+> Created by DALL.E3
 ## SWEN.755 - Assignment 4
 ## Teammates - Group 6
 - Sam Singh Anantha
