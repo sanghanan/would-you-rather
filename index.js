@@ -88,11 +88,11 @@ sequelize.sync({ force: false })
         console.log('Tables have been synchronized');
     });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-    console.log(`Opening http://localhost:${port} in the browser`);
-    import('open').then(open => {
-        open.default(`http://localhost:${port}`);
+// Listen on the port only if not in test environment
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
     });
-});
+}
 
+module.exports = app;
