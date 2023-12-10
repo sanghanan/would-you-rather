@@ -36,7 +36,7 @@ describe('Session Management', () => {
         expect(initialCookie).not.toBe(newCookie);
     });
 
-    it('Session cookies should be secure and HttpOnly', async () => {
+    it('Session cookies should be secure', async () => {
         const response = await request(app)
             .get('/')
             .expect(200);
@@ -46,6 +46,17 @@ describe('Session Management', () => {
         expect(cookie).toBeDefined();
         const cookieFlags = cookie.toLowerCase().split(';').map(flag => flag.trim());
         expect(cookieFlags).toContain('secure');
+    });
+
+    it('Session cookies should be HttpOnly', async () => {
+        const response = await request(app)
+            .get('/')
+            .expect(200);
+            
+        const cookie = response.headers['set-cookie'][0];
+
+        expect(cookie).toBeDefined();
+        const cookieFlags = cookie.toLowerCase().split(';').map(flag => flag.trim());
         expect(cookieFlags).toContain('httponly');
     });
     

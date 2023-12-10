@@ -16,7 +16,14 @@
 - **Admin Controls**: Admin users can open or close polls and view detailed vote counts.
 - **Responsive Design**: Accessible on various devices with a user-friendly interface.
 
-## Installation
+## To Run the Application
+
+### Prepare the Environmrnt
+
+Follow the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install the latest version of **npm** and **node.js**.
+
+### Set up the application
+
 To get the application running on your local machine, follow these steps:
 
 1. **Clone the Repository**:
@@ -42,6 +49,14 @@ Run the application using the following command:
 node index.js
 ```
 The application will automatically open in your default web browser at `http://localhost:3000/`.
+
+## Run the Tests
+Run the tests for architecture breakers using:
+
+```bash
+npm test
+```
+Results will show in the console.
 
 ## Technologies Used
 - **Frontend**: EJS, Bootstrap
