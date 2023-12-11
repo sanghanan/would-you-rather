@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../index');
 
+
 describe('Session Management', () => {
     it('Session should expire after set time', async () => {
         // Log in to the application
@@ -8,7 +9,6 @@ describe('Session Management', () => {
             .post('/auth/login')
             .send({ username: 'testUser', password: 'testPassword' })
             .expect(302);
-
         const cookie = loginResponse.headers['set-cookie'][0];
 
         await new Promise(resolve => setTimeout(resolve, 70000));
