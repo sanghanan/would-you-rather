@@ -18,7 +18,7 @@ app.use(session({
     secret: 'secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: false, httpOnly: false },
 }));
 
 // Passport Configuration
